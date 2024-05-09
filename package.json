@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "5.13.0",
     "@types/node": "^20.12.10",
     "dotenv": "16.4.5",
     "fastify": "^4.27.0",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "2.2.2",
-    "eslint": "8.57.0"
+    "eslint": "8.57.0",
+    "prisma": "5.13.0"
   }
 }
