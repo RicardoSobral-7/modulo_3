@@ -1,34 +1,31 @@
-import { prisma } from '@/lib/prisma'
-import { hash } from 'bcryptjs'
+import { prisma } from "@/lib/prisma";
+import { UsersRepositoryInterface } from "@/repositories/interfaces/users-repository";
+import { hash } from "bcryptjs";
 
 interface RegisterUseCaseRequest {
-  name: string
-  email: string
-  password: string
+  name: string;
+  email: string;
+  password: string;
 }
+// cada classe de caso de uso terá apenas um unico metodo
 
-export async function registerUseCase({
-  email,
-  name,
-  password,
-}: RegisterUseCaseRequest) {
-  const password_hash = await hash(password, 6)
+export class RegisterUseCase {
+  // para já instanciarmos direto sem precisar declarar ai colocar this. tal coisa, no javascript só colocar-mos direto o private no parametro do contructor
+  constructor(private usersRepository: UsersRepositoryInterface) {}
 
-  const userWithSameEmail = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  })
+  async execute({ email, name, password }: RegisterUseCaseRequest) {
+    const password_hash = await hash(password, 6);
 
-  if (userWithSameEmail) {
-    throw new Error('E-mail already exists!')
-  }
+    const userWithSameEmail = await this.usersRepository.findByEmail(email);
 
-  await prisma.user.create({
-    data: {
+    if (userWithSameEmail) {
+      throw new Error("E-mail already exists!");
+    }
+
+    await this.usersRepository.create({
       name,
       email,
       password_hash,
-    },
-  })
+    });
+  }
 }
