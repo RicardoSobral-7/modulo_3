@@ -24,7 +24,7 @@ export class RegisterUseCase {
 
     await this.usersRepository.create({
       name,
-      email,
+      email,    
       password_hash,
     });
   }
