@@ -20,7 +20,6 @@ app.setErrorHandler((error, _, reply) => {
 
   if (env.NODE_ENV !== "production") {
     console.error(error);
-    0;
   } else {
     // TODO: Aqui podemos enviar o erro para um serviço de monitoramento
     // como o sentry

@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   api-modulo-3:
     image: bitnami/postgresql
