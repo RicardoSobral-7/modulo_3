@@ -57,7 +57,8 @@ describe("Register Use Case", () => {
       password: "123456",
     });
 
-    expect(() =>
+    // toda vez que tiver uma promise dentro do expect nào esquecer o await antes do expect
+    await expect(() =>
       registerUsecase.execute({
         name: "John Doe",
         email,
