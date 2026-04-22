@@ -1,9 +1,9 @@
 import { UsersRepository } from "@/repositories/users-repository";
-import { UserAlreadyExistsError } from "@/use-case/User/errors/user-already-exists-error";
-import { RegisterUseCase } from "@/use-case/User/register";
+import { UserAlreadyExistsError } from "@/use-case/errors/user-already-exists-error";
+import { RegisterUseCase } from "@/use-case/register";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
-export async function Register(request: FastifyRequest, reply: FastifyReply) {
+export async function register(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
     name: z.string(),
     email: z.string().email(),

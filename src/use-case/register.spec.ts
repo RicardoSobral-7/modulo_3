@@ -1,8 +1,8 @@
 import { UsersRepository } from "@/repositories/users-repository";
 import { describe, expect, it } from "vitest";
-import { RegisterUseCase } from "./register";
 import { compare } from "bcryptjs";
 import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository";
+import { RegisterUseCase } from "./register";
 import { UserAlreadyExistsError } from "./errors/user-already-exists-error";
 
 // describe sempre iremos colocar o nome do que estamos testando, no caso estamos testando o usecase de registro

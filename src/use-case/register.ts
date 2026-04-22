@@ -16,7 +16,7 @@ interface RegisterUseCaseResponse {
 
 export class RegisterUseCase {
   // para já instanciarmos direto sem precisar declarar ai colocar this. tal coisa, no javascript só colocar-mos direto o private no parametro do contructor
-  constructor(private usersRepository: UsersRepositoryInterface) {}
+  constructor(private usersRepository: UsersRepositoryInterface) { }
 
   async execute({
     email,
