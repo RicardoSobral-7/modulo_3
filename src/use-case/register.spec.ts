@@ -1,4 +1,4 @@
-import { UsersRepository } from "@/repositories/users-repository";
+import { UsersRepository } from "@/repositories/prisma/prisma-users-repository";
 import { beforeEach, describe, expect, it } from "vitest";
 import { compare } from "bcryptjs";
 import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository";

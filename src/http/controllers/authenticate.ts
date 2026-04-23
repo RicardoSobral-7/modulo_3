@@ -1,4 +1,4 @@
-import { UsersRepository } from "@/repositories/users-repository";
+import { UsersRepository } from "@/repositories/prisma/prisma-users-repository";
 import { AuthenticateUseCase } from "@/use-case/authenticate";
 import { InvalidCredentialsError } from "@/use-case/errors/invalid-credentials-error";
 import { makeAuthenticateUseCase } from "@/use-case/factories/make-authenticate-use-case";

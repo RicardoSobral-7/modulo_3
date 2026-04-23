@@ -1,4 +1,4 @@
-import { UsersRepository } from "@/repositories/users-repository";
+import { UsersRepository } from "@/repositories/prisma/prisma-users-repository";
 import { UserAlreadyExistsError } from "@/use-case/errors/user-already-exists-error";
 import { makeRegisterUseCase } from "@/use-case/factories/make-register-use-case";
 import { RegisterUseCase } from "@/use-case/register";

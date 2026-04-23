@@ -3,7 +3,20 @@ import { UsersRepositoryInterface } from "../interfaces/users-repository";
 
 // aqui é onde vamos criar a parte fake, vamos guardar informações em memorias e fazer de conta que ta batendo no banco, estamos usando o js puro para isso
 export class InMemoryUsersRepository implements UsersRepositoryInterface {
+
+
+
   public items: User[] = [];
+
+  async findById(id: string): Promise<User | null> {
+    const user = this.items.find((item) => item.id === id);
+
+    if (!user) {
+      return null;
+    }
+
+    return user;
+  }
 
   async create(data: Prisma.UserCreateInput) {
     const user = {
