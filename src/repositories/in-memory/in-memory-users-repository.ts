@@ -1,5 +1,6 @@
 import { Prisma, User } from "@prisma/client";
 import { UsersRepositoryInterface } from "../interfaces/users-repository";
+import { randomUUID } from "crypto";
 
 // aqui é onde vamos criar a parte fake, vamos guardar informações em memorias e fazer de conta que ta batendo no banco, estamos usando o js puro para isso
 export class InMemoryUsersRepository implements UsersRepositoryInterface {
@@ -20,7 +21,7 @@ export class InMemoryUsersRepository implements UsersRepositoryInterface {
 
   async create(data: Prisma.UserCreateInput) {
     const user = {
-      id: "user-1",
+      id: randomUUID(),
       name: data.name,
       email: data.email,
       password_hash: data.password_hash,
