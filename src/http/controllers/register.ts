@@ -1,5 +1,6 @@
 import { UsersRepository } from "@/repositories/users-repository";
 import { UserAlreadyExistsError } from "@/use-case/errors/user-already-exists-error";
+import { makeRegisterUseCase } from "@/use-case/factories/make-register-use-case";
 import { RegisterUseCase } from "@/use-case/register";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
@@ -13,10 +14,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   const { email, name, password } = registerBodySchema.parse(request.body);
 
   try {
-    // lembrar do padrão sempre que for classe letra maiuscula quando instanciarmos numa variavel passar para minuscula
-    const usersRepository = new UsersRepository();
-    // agora invertemos a dependência, o repository por si, trabalha sozinho e passamos ao use case ele como constructor para criar a intancia dessa classe
-    const registerUseCase = new RegisterUseCase(usersRepository);
+    const registerUseCase = makeRegisterUseCase()
 
     // o execute é o unico método que existe dentro do use case, e  havera um execute em cada use case
     await registerUseCase.execute({ email, name, password });

@@ -5,7 +5,7 @@ Gympass Style App
 ## RFs (requisitos funcionais)
 
 - [x] Cadastrar usuários
-- [ ] Autenticar usuários
+- [x] Autenticar usuários
 - [ ] Obter perfil do usuário
 - [ ] Obter números de check-ins realizados 
 - [ ] Obter histórico de check-in

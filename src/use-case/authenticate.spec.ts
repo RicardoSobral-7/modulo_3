@@ -1,14 +1,24 @@
 import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository";
 import { hashSync } from "bcryptjs";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { AuthenticateUseCase } from "./authenticate";
 import { InvalidCredentialsError } from "./errors/invalid-credentials-error";
 
+// vamos criar as variaveis aqui fora para que possamos pegar globalmente e não ficar presa ao escopo do beforeEach, vamos criar como let e atribuir no beforeEach toda vez
+let usersRepository: InMemoryUsersRepository;
+// SUT sistem under test um patters pra mostrar o que estamos testando
+let sut: AuthenticateUseCase;
+
+
 describe("Autenticate Use Case", () => {
+  // irá executar antes de cada um dos testes, utilizar o beforeeach garante que o ambiente esteja limpo e pronto pra caada 1
+  beforeEach(() => {
+    usersRepository = new InMemoryUsersRepository()
+    sut = new AuthenticateUseCase(usersRepository)
+  })
+
+
   it("Should be able to authenticate", async () => {
-    const usersRepository = new InMemoryUsersRepository();
-    // SUT sistem under test um patters pra mostrar o que estamos testando
-    const sut = new AuthenticateUseCase(usersRepository);
 
     await usersRepository.create({
       name: "John Doe",
@@ -25,9 +35,6 @@ describe("Autenticate Use Case", () => {
   });
 
   it("Should be not able to authenticate with wrong email", async () => {
-    const usersRepository = new InMemoryUsersRepository();
-    // SUT sistem under test um patters pra mostrar o que estamos testando
-    const sut = new AuthenticateUseCase(usersRepository);
 
     expect(() => sut.execute({
       email: "johndoe@exemple.com",
@@ -38,7 +45,7 @@ describe("Autenticate Use Case", () => {
 
   it("Should be not able to authenticate with wrong password", async () => {
     const usersRepository = new InMemoryUsersRepository();
-    // SUT sistem under test um patters pra mostrar o que estamos testando
+    // SUT system under test um patters pra mostrar o que estamos testando
     const sut = new AuthenticateUseCase(usersRepository);
 
     await usersRepository.create({
