@@ -32,6 +32,7 @@ export class InMemoryUsersRepository implements UsersRepositoryInterface {
 
     return user;
   }
+
   async findByEmail(email: string) {
     const user = this.items.find((item) => item.email === email);
 

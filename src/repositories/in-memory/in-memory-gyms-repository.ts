@@ -1,8 +1,10 @@
 
-import { Gym } from '@prisma/client';
-import { GymRepositoryInterface } from '../interfaces/gyms-repository';
+import { Gym, Prisma } from '@prisma/client';
+import { GymsRepositoryInterface } from '../interfaces/gyms-repository';
+import { randomUUID } from 'crypto';
 
-export class InMemoryGymRepository implements GymRepositoryInterface {
+export class InMemoryGymsRepository implements GymsRepositoryInterface {
+
 
   public items: Gym[] = []
 
@@ -12,6 +14,23 @@ export class InMemoryGymRepository implements GymRepositoryInterface {
     if (!gym) {
       return null
     }
+
+    return gym
+  }
+
+  async create(data: Prisma.GymCreateInput): Promise<Gym> {
+    // pra salvar os decimais no prisma, precisamos usar uma função dele
+    const gym = {
+      id: data.id ?? randomUUID(),
+      title: data.title,
+      description: data.description ?? null,
+      phone: data.phone ?? null,
+      latitude: new Prisma.Decimal(data.latitude.toString()),
+      longitude: new Prisma.Decimal(data.longitude.toString()),
+      created_at: new Date(),
+    };
+
+    this.items.push(gym)
 
     return gym
   }

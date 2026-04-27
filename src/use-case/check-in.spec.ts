@@ -1,11 +1,13 @@
 import { InMemoryCheckInsRepository } from "@/repositories/in-memory/in-memory-check-ins-repository";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CheckInUseCase } from "./check-in";
-import { InMemoryGymRepository } from "@/repositories/in-memory/in-memory-gyms-repository";
+import { InMemoryGymsRepository } from "@/repositories/in-memory/in-memory-gyms-repository";
 import { Decimal } from "@prisma/client/runtime/library";
+import { MaxNumberOfCheckInsError } from "./errors/max-number-of-check-ins-error";
+import { MaxDistanceError } from "./errors/max-distance-error";
 
 let checkInsRepository: InMemoryCheckInsRepository;
-let gymRepository: InMemoryGymRepository;
+let gymsRepository: InMemoryGymsRepository;
 let sut: CheckInUseCase;
 
 // quando tratarmos de datas nos testes é importante a gente usar o mockador de datas do vitest, ele irá garantir que a data seja sempre a setada, evitando problemas 
@@ -14,17 +16,17 @@ let sut: CheckInUseCase;
 describe("Check In Use Case", () => {
   beforeEach(() => {
     checkInsRepository = new InMemoryCheckInsRepository()
-    gymRepository = new InMemoryGymRepository
-    sut = new CheckInUseCase(checkInsRepository, gymRepository)
+    gymsRepository = new InMemoryGymsRepository()
+    sut = new CheckInUseCase(checkInsRepository, gymsRepository)
 
     // como a academia é algo que vai se repetir ao longo dos testes podemos cria-la aqui no before each
-    gymRepository.items.push({
+    gymsRepository.create({
       id: 'gym-01',
       title: 'JavaScript Gym',
       description: '',
       phone: "",
-      latitude: new Decimal(-22.9171004),
-      longitude: new Decimal(-46.5520027)
+      latitude: -22.9171004,
+      longitude: -46.5520027
     })
 
     // ativa o mock pra usar datas fakes
@@ -66,10 +68,10 @@ describe("Check In Use Case", () => {
         userLatitude: -22.9171004,
         userLongitude: -46.5520027
       })
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxNumberOfCheckInsError)
   })
 
-  it("Should not be able to check in twice in the different days", async () => {
+  it("Should be able to check in twice but in the different days", async () => {
     // seta na mão a data
     vi.setSystemTime(new Date(2022, 0, 20, 8, 0, 0))
 
@@ -95,7 +97,7 @@ describe("Check In Use Case", () => {
 
   it("Should not be able to check in on distant gym", async () => {
 
-    gymRepository.items.push({
+    gymsRepository.items.push({
       id: 'gym-02',
       title: 'TypeScript Gym',
       description: '',
@@ -111,7 +113,7 @@ describe("Check In Use Case", () => {
         userLatitude: -22.9171004,
         userLongitude: -46.5520027
       })
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxDistanceError)
 
   });
 });
