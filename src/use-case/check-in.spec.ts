@@ -68,7 +68,7 @@ describe("Check In Use Case", () => {
         userLatitude: -22.9171004,
         userLongitude: -46.5520027
       })
-    ).rejects.toBeInstanceOf(MaxNumberOfCheckInsError)
+    ).rejects.instanceof(MaxNumberOfCheckInsError)
   })
 
   it("Should be able to check in twice but in the different days", async () => {

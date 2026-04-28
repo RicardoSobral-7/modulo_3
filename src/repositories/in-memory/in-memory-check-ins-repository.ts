@@ -7,6 +7,8 @@ import { randomUUID } from 'node:crypto';
 export class InMemoryCheckInsRepository implements CheckInsRepositoryInterface {
   public items: CheckIn[] = []
 
+
+
   async findByUserIdOnDate(userId: string, date: Date): Promise<CheckIn | null> {
 
     // aqui a gente pega o momento que inicia o dia
@@ -20,6 +22,7 @@ export class InMemoryCheckInsRepository implements CheckInsRepositoryInterface {
 
       checkIn.user_id === userId && isOnSameDate
     })
+    console.log(checkOnSameDate);
 
     if (!checkOnSameDate) {
       return null
@@ -41,5 +44,11 @@ export class InMemoryCheckInsRepository implements CheckInsRepositoryInterface {
     this.items.push(checkIn)
 
     return checkIn
+  }
+
+  async findManyByUserId(userId: string, page: number): Promise<CheckIn[]> {
+    return this.items
+      .filter(item => item.user_id = userId)
+      .slice((page - 1) * 20, page * 20)
   }
 }
