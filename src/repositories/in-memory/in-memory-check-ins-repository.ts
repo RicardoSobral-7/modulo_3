@@ -5,6 +5,8 @@ import dayjs from "dayjs";
 import { randomUUID } from 'node:crypto';
 
 export class InMemoryCheckInsRepository implements CheckInsRepositoryInterface {
+
+
   public items: CheckIn[] = []
 
   async countByUserId(userId: string) {
@@ -52,5 +54,26 @@ export class InMemoryCheckInsRepository implements CheckInsRepositoryInterface {
     return this.items
       .filter(item => item.user_id = userId)
       .slice((page - 1) * 20, page * 20)
+  }
+
+  async findById(id: string): Promise<CheckIn | null> {
+    const checkIn = this.items.find(item => item.id === id)
+
+    if (!checkIn) {
+      return null
+    }
+
+    return checkIn
+  }
+
+  async save(checkIn: CheckIn): Promise<CheckIn> {
+    const checkinIndex = this.items.findIndex((item) => item.id === checkIn.id)
+
+    // o findIndex vai encontrar o index que precisamos para ai sim nos mudarmos o necessário reatribuindo o checkin com validate_at atualizado
+    if (checkinIndex >= 0) {
+      this.items[checkinIndex] = checkIn
+    }
+
+    return checkIn
   }
 }
