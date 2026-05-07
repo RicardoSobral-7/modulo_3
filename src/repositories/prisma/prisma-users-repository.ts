@@ -1,11 +1,11 @@
 import { prisma } from "@/lib/prisma";
-import { Prisma, User } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { UsersRepositoryInterface } from "../interfaces/users-repository";
 
 // o repository sempre vai serguir o padrao de no meio estar o nome da entidade do banco e em sequencia o nome do repository
 // toda vez que criarmos um repository, vamos criar uma interface para ele, e depois a implementação
 export class UsersRepository implements UsersRepositoryInterface {
-  async findById(id: string): Promise<User | null> {
+  async findById(id: string) {
     const user = await prisma.user.findUnique({
       where: {
         id,
